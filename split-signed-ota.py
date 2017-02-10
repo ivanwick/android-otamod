@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3
 
 import os
 import sys
@@ -26,8 +26,8 @@ signed_zip_size = os.stat(signed_zip_fname).st_size
 #     // the whole comment.
 
 with open(signed_zip_fname, 'rb') as signed_zipfile, \
-     open(args.signature, 'w') as signature_file, \
-     open(args.unsigned, 'w') as unsig_zipfile:
+     open(args.signature, 'wb') as signature_file, \
+     open(args.unsigned, 'wb') as unsig_zipfile:
 
     signed_zipfile.seek(signed_zip_size - 6)
     footer = signed_zipfile.read(6)

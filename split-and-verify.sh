@@ -74,7 +74,12 @@ abootimg -x boot.img
 popd >/dev/null
 
 pushd boot/modified >/dev/null
-sudo abootimg-unpack-initrd ../orig/initrd.img
+
+# Must be able to create root-owned files inside the initrd
+fakeroot bash <<END_FAKEROOT
+set -o errexit
+
+abootimg-unpack-initrd ../orig/initrd.img
 
 echo "Applying modifications" >&2
 
@@ -82,7 +87,10 @@ echo "Applying modifications" >&2
 # call modify-initrd in the toplevel directory
 ../../../modify-initrd
 
-sudo abootimg-pack-initrd initrd.img ramdisk
+abootimg-pack-initrd initrd.img ramdisk
+END_FAKEROOT
+
+
 abootimg --create boot-unsigned.img \
   -f ../orig/bootimg.cfg \
   -k ../orig/zImage \

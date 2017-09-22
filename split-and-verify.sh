@@ -135,7 +135,7 @@ popd >&2
 
 cat <<END_MSG
 
-  adb reboot recovery
+  adb reboot recovery (or hold vol down at boot, select Recovery Mode)
   - power + vol up
   - apply update from ADB
   adb sideload signed.zip

@@ -90,11 +90,18 @@ echo "Applying modifications" >&2
 abootimg-pack-initrd initrd.img ramdisk
 END_FAKEROOT
 
+# Build the new boot image (unsigned) with the modified initrd image.
+# A "bootsize" parameter was dumped to bootimg.cfg when the original boot.img
+# was unpacked, denoting the original size. But this might be too small if
+# the modifications increased the initrd size.
+# So override "bootsize" on the command line with a blank value. abootimg can
+# calculate the proper size itself.
 
 abootimg --create boot-unsigned.img \
   -f ../orig/bootimg.cfg \
   -k ../orig/zImage \
-  -r ./initrd.img
+  -r ./initrd.img \
+  -c "bootsize="
 
 "$BOOT_SIGNER" \
   /boot \
